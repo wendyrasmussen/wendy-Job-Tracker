@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Prospect } from "@shared/schema";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Trash2, Pencil, Flame, ThumbsUp, Minus } from "lucide-react";
+import { ExternalLink, Trash2, Pencil, Flame, ThumbsUp, Minus, User, Mail } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -111,6 +111,28 @@ export function ProspectCard({ prospect }: { prospect: Prospect }) {
             </span>
           )}
         </div>
+
+        {(prospect.contactName || prospect.contactEmail) && (
+          <div className="flex items-center gap-1.5 flex-wrap text-xs text-muted-foreground">
+            {prospect.contactName && (
+              <span className="inline-flex items-center gap-0.5" data-testid={`text-contact-name-${prospect.id}`}>
+                <User className="w-3 h-3" />
+                {prospect.contactName}
+              </span>
+            )}
+            {prospect.contactEmail && (
+              <a
+                href={`mailto:${prospect.contactEmail}`}
+                className="inline-flex items-center gap-0.5 text-primary hover:underline"
+                onClick={(e) => e.stopPropagation()}
+                data-testid={`link-contact-email-${prospect.id}`}
+              >
+                <Mail className="w-3 h-3" />
+                {prospect.contactEmail}
+              </a>
+            )}
+          </div>
+        )}
 
         {prospect.jobUrl && (
           <a

@@ -22,6 +22,8 @@ export const prospects = pgTable("prospects", {
   status: text("status").notNull().default("Bookmarked"),
   interestLevel: text("interest_level").notNull().default("Medium"),
   salary: integer("salary"),
+  contactName: text("contact_name"),
+  contactEmail: text("contact_email"),
   notes: text("notes"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
@@ -36,6 +38,8 @@ export const insertProspectSchema = createInsertSchema(prospects).omit({
   interestLevel: z.enum(INTEREST_LEVELS).default("Medium"),
   jobUrl: z.string().optional().nullable(),
   salary: z.number().int().min(0).optional().nullable(),
+  contactName: z.string().optional().nullable(),
+  contactEmail: z.string().email("Invalid email address").optional().nullable().or(z.literal("")),
   notes: z.string().optional().nullable(),
 });
 
