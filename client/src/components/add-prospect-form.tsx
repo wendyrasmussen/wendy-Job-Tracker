@@ -25,6 +25,10 @@ import {
 } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 
+function formatSalaryInput(value: number): string {
+  return value.toLocaleString("en-US");
+}
+
 export function AddProspectForm({ onSuccess }: { onSuccess?: () => void }) {
   const { toast } = useToast();
 
@@ -36,6 +40,7 @@ export function AddProspectForm({ onSuccess }: { onSuccess?: () => void }) {
       jobUrl: "",
       status: "Bookmarked",
       interestLevel: "Medium",
+      salary: undefined,
       notes: "",
     },
   });
@@ -98,6 +103,28 @@ export function AddProspectForm({ onSuccess }: { onSuccess?: () => void }) {
                   {...field}
                   value={field.value ?? ""}
                   data-testid="input-job-url"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="salary"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Salary (optional)</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="e.g. 120000"
+                  data-testid="input-salary"
+                  value={field.value != null ? `$${formatSalaryInput(field.value)}` : ""}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/[^0-9]/g, "");
+                    field.onChange(raw ? parseInt(raw, 10) : null);
+                  }}
                 />
               </FormControl>
               <FormMessage />

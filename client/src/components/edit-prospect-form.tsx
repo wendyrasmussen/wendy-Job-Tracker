@@ -25,6 +25,10 @@ import {
 } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 
+function formatSalaryInput(value: number): string {
+  return value.toLocaleString("en-US");
+}
+
 interface EditProspectFormProps {
   prospect: Prospect;
   onSuccess?: () => void;
@@ -41,6 +45,7 @@ export function EditProspectForm({ prospect, onSuccess }: EditProspectFormProps)
       jobUrl: prospect.jobUrl ?? "",
       status: prospect.status as InsertProspect["status"],
       interestLevel: prospect.interestLevel as InsertProspect["interestLevel"],
+      salary: prospect.salary ?? undefined,
       notes: prospect.notes ?? "",
     },
   });
@@ -102,6 +107,28 @@ export function EditProspectForm({ prospect, onSuccess }: EditProspectFormProps)
                   {...field}
                   value={field.value ?? ""}
                   data-testid="input-edit-job-url"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="salary"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Salary (optional)</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="e.g. 120000"
+                  data-testid="input-edit-salary"
+                  value={field.value != null ? `$${formatSalaryInput(field.value)}` : ""}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/[^0-9]/g, "");
+                    field.onChange(raw ? parseInt(raw, 10) : null);
+                  }}
                 />
               </FormControl>
               <FormMessage />
