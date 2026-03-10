@@ -41,6 +41,8 @@ export function AddProspectForm({ onSuccess }: { onSuccess?: () => void }) {
       status: "Bookmarked",
       interestLevel: "Medium",
       salary: undefined,
+      contactName: "",
+      contactEmail: "",
       notes: "",
     },
   });
@@ -131,6 +133,47 @@ export function AddProspectForm({ onSuccess }: { onSuccess?: () => void }) {
             </FormItem>
           )}
         />
+
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="contactName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contact Name (optional)</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="e.g. Jane Smith"
+                    {...field}
+                    value={field.value ?? ""}
+                    data-testid="input-contact-name"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="contactEmail"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contact Email (optional)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="e.g. jane@company.com"
+                    {...field}
+                    value={field.value ?? ""}
+                    data-testid="input-contact-email"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <div className="grid grid-cols-2 gap-4">
           <FormField

@@ -49,6 +49,16 @@ export async function registerRoutes(
         updates.salary = null;
       }
     }
+    if (body.contactName !== undefined) updates.contactName = body.contactName;
+    if (body.contactEmail !== undefined) {
+      if (body.contactEmail !== null && body.contactEmail !== "") {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(body.contactEmail)) {
+          return res.status(400).json({ message: "Invalid email address" });
+        }
+      }
+      updates.contactEmail = body.contactEmail || null;
+    }
     if (body.notes !== undefined) updates.notes = body.notes;
 
     if (body.status !== undefined) {
